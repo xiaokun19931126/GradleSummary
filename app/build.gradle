@@ -21,6 +21,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //apk只保留 xxhdpi 资源
+        resConfigs "xxhdpi"
     }
 
     /**
@@ -43,7 +45,33 @@ android {
 
     /**
      * buildTypes和product flavor的结合被称之为构建variant
+     *
+     * product flavor 极大简化了基于相同代码构建多个版本的应用的进程
      */
+    //flavor 维度列表
+    flavorDimensions 'api', 'version'
+    productFlavors {
+        single {
+            // 指定这个 flavor 为 version
+            dimension 'version'
+        }
+        full {
+            // 指定这个 flavor 为 version
+            dimension 'version'
+        }
+        minApi24 {
+            // 指定这个 flavor 为 api
+            dimension 'api'
+            minSdkVersion '24'
+            versionNameSuffix "-minApi24"
+        }
+        minApi21 {
+            dimension "api"
+            minSdkVersion '21'
+            versionNameSuffix "-minApi21"
+        }
+    }
+
     buildTypes {
         staging {
             staging.initWith(buildTypes.debug)
@@ -90,17 +118,45 @@ android {
         }
     }
 
+    //hook到Android插件的方式之一是操控构建variant
+    //遍历应用构建的所有 variant
+    //如果想对库构建variant,则使用android.libraryVariants
+    //便利方法没有使用each而是使用all
+    //这是因为each方法会在构建variant,被Android插件创建之前的评测阶段被触发,
+    //而all方法会在每次添加新项目到集合时被触发
+    //经测试 each 和 all 方法并没有区别
+    //该hook可以用来修改保存之前的APK名称,并为文件名添加版本号
+    //android.applicationVariants.each { variant ->
+    //    println "变体variant:$variant"
+    //    variant.outputs.each {
+    //        println "it是什么:$it"
+    //        println "apk名称：${outputFileName}"
+    //    }
+    //}
+    android.applicationVariants.all { variant ->
+        println "变体variant:$variant"
+        variant.outputs.all {
+            println "it是什么:$it"
+            println "apk名称：${outputFileName}"
+        }
+    }
 
+    //源集
+    sourceSets {
+
+    }
 }
 
 dependencies {
-    android.applicationVariants.all {
-        println "test variant,$it"
-        println "appId:${it.generateBuildConfig.appPackageName}"
-        println "variant:${it.variantData}"
-        println "scope:${it.variantData.scope}"
-    }
+    //android.applicationVariants.all {
+    //    println "test variant,$it"
+    //    println "appId:${it.generateBuildConfig.appPackageName}"
+    //    println "variant:${it.variantData}"
+    //    println "scope:${it.variantData.scope}"
+    //}
     println '什么时候执行'
+    println 'implementation 表示为所有 buildType 依赖,如果单独为 staging 模块,那么需要 stagingImplementation 起头'
+    // stagingImplementation 'androidx.appcompat:appcompat:1.1.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -129,6 +185,7 @@ task test1 {
     }
 }
 
+//创建一个简单的自定义插件
 class CustomPlugin implements Plugin<Project> {
 
     @Override
