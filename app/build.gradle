@@ -1,5 +1,3 @@
-import java.util.function.Consumer
-
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
@@ -32,15 +30,15 @@ android {
      */
     signingConfigs {
         release {
-            storeFile file('E:\\android\\ProjectSpaces\\SantiDemo\\app\\santee_demo.jks')
+            storeFile file('.\\gradle_learning.jks')
             storePassword '123456'
             keyPassword '123456'
-            keyAlias = 'rongshi'
+            keyAlias = 'gradle_learning'
         }
         staging {
-            storeFile file('E:\\android\\ProjectSpaces\\SantiDemo\\app\\santee_demo.jks')
+            storeFile file('.\\santee_demo.jks')
             storePassword '123456'
-            keyAlias = 'rongshi'
+            keyAlias = 'gradle_learning'
             keyPassword '123456'
         }
     }
@@ -51,28 +49,28 @@ android {
      * product flavor 极大简化了基于相同代码构建多个版本的应用的进程
      */
     //flavor 维度列表
-    flavorDimensions 'api', 'version'
-    productFlavors {
-        single {
-            // 指定这个 flavor 为 version
-            dimension 'version'
-        }
-        full {
-            // 指定这个 flavor 为 version
-            dimension 'version'
-        }
-        minApi24 {
-            // 指定这个 flavor 为 api
-            dimension 'api'
-            minSdkVersion '24'
-            versionNameSuffix "-minApi24"
-        }
-        minApi21 {
-            dimension "api"
-            minSdkVersion '21'
-            versionNameSuffix "-minApi21"
-        }
-    }
+    //flavorDimensions 'api', 'version'
+    //productFlavors {
+    //    single {
+    //        // 指定这个 flavor 为 version
+    //        dimension 'version'
+    //    }
+    //    full {
+    //        // 指定这个 flavor 为 version
+    //        dimension 'version'
+    //    }
+    //    minApi24 {
+    //        // 指定这个 flavor 为 api
+    //        dimension 'api'
+    //        minSdkVersion '24'
+    //        versionNameSuffix "-minApi24"
+    //    }
+    //    minApi21 {
+    //        dimension "api"
+    //        minSdkVersion '21'
+    //        versionNameSuffix "-minApi21"
+    //    }
+    //}
 
     buildTypes {
         staging {

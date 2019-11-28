@@ -3,6 +3,7 @@ package com.example.gradletest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.gradletest.Constants.appType
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +15,6 @@ class MainActivity : AppCompatActivity() {
         tv_hi.setTextColor(resources.getColor(R.color.text_color));
         val appUrl = BuildConfig.APP_URL
         tv_hi.setText(appUrl)
-        Toast.makeText(this, Constants.appType, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, appType, Toast.LENGTH_SHORT).show()
     }
 }
