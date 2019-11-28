@@ -1,3 +1,5 @@
+import java.util.function.Consumer
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
@@ -168,14 +170,25 @@ dependencies {
 }
 
 def getInfo() {
+    //android{}是个扩展
     def extension = project.extensions.getByName("android")
-    println "buildToolsVersion:${extension.buildToolsVersion}"
-    println "compileSdkVersion:${extension.getCompileSdkVersion()}"
-    println "applicationId:${extension.defaultConfig.applicationId}"
-    println "minSdkVersion:${extension.defaultConfig.minSdkVersion}"
-    println "targetSdkVersion:${extension.defaultConfig.targetSdkVersion}"
-    println "versionCode:${extension.defaultConfig.versionCode}"
-    println "versionName:${extension.defaultConfig.versionName}"
+    println "扩展名称:${extension.class.name}"
+    def set = extension.properties.keySet()
+    set.each {
+        if (it.toString().contains("defaultConfig")) {
+            println "defaultConfig所属类:${it.class.name}"
+            def configProperties = it.properties
+            println "config扩展名称:$configProperties"
+        }
+    }
+    println "android扩展属性:${set}"
+    //println "buildToolsVersion:${extension.buildToolsVersion}"
+    //println "compileSdkVersion:${extension.getCompileSdkVersion()}"
+    //println "applicationId:${extension.defaultConfig.applicationId}"
+    //println "minSdkVersion:${extension.defaultConfig.minSdkVersion}"
+    //println "targetSdkVersion:${extension.defaultConfig.targetSdkVersion}"
+    //println "versionCode:${extension.defaultConfig.versionCode}"
+    //println "versionName:${extension.defaultConfig.versionName}"
 }
 
 task test1 {
@@ -192,6 +205,7 @@ class CustomPlugin implements Plugin<Project> {
     void apply(Project target) {
         target.task("custom1") {
             println 'hello,world!输出自定义插件'
+
         }
     }
 }

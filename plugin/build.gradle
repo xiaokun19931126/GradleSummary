@@ -1,0 +1,14 @@
+apply plugin: 'groovy'//使用groovy插件
+dependencies {
+    implementation gradleApi()//引入gradleApi
+}
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'//指定groovy目录
+        }
+        resources {
+            srcDir 'src/main/resources'//指定resources目录
+        }
+    }
+}
