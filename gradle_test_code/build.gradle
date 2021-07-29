@@ -1,0 +1,132 @@
+//首先需要建立gradle的环境变量
+// windows方法如下
+// 1.进入我的电脑，属性，高级系统属性，环境变量设置，系统变量
+// 2.新建一个 GRADLE_HOME 变量，变量值为
+// C:\Users\83849\.gradle\wrapper\dists\gradle-6.1.1-all\cfmwm155h49vnt3hynmlrsdst\gradle-6.1.1
+// 3.双击 Path 变量，新建新的环境变量，输入%GRADLE_HOME%\bin，点击确定。
+// 4.重新打开 cmd ，输入 gradle -v 即可看到 gradle 版本
+// 5.cd 到当前目录下, 即可使用 gradle 命令行指令，例如 gradle printStringClass
+
+//测试单引号，双引号
+task printStringClass {
+    def str1 = '单引号'
+    def str2 = "双引号"
+
+    println "单引号定义的字符串类型:" + str1.getClass().name
+    println "双引号定义的字符串类型:" + str2.getClass().name
+}
+
+task printStringVar {
+    def name = '张三'
+
+    println '单引号的变量计算:${name}'
+    println "双引号的变量计算:${name}"
+}
+
+//集合
+task printList {
+    def numList = [1, 2, 3, 4, 5]
+    println numList.getClass().name
+
+    println numList[1] //打印第二个元素
+    println numList[-1] //打印最后一个元素
+    println numList[1..3] //打印第二个到第四个元素
+
+    //迭代
+    numList.each {
+        if (it != numList[-1]) {
+            print "${it},"
+        } else {
+            print "${it}"
+        }
+    }
+    println ""
+}
+
+task printMap {
+    //定义
+    def map = ['width': 1920, 'height': 1080]
+    //获取map的类名字 是 java.util.LinkedHashMap
+    println "map的类型是:${map.getClass().name}"
+    //获取 value 值
+    println "宽度是${map['width']}"
+    println "高度是${map.height}"
+
+    //迭代
+    map.each {
+        println "key:${it.key},value:${it.value}"
+    }
+}
+
+//方法
+task invokeMethod {
+    method10(1, 2)
+    //调用方法省略括号
+    method10 1, 2
+}
+
+//定义方法修饰符 def 和变量一样
+def method10(int a, int b) {
+    println a + b
+}
+
+task printMethodReturn {
+    def add1 = method11(1, 2)
+    def add2 = method11 5, 3
+    println "add1:${add1},add2:${add2}"
+}
+
+// 方法可以省略不写 retrun, 最后一行的输出即为 return 的值
+def method11(int a, int b) {
+    if (a > b) {
+        a
+    } else {
+        b
+    }
+}
+
+//参数闭包
+//呆板写法
+task bibao {
+    def numList = [1, 2, 3, 4, 5]
+    //最原始的
+    //numList.each({ println it })
+//
+    ////格式化之后的
+    //numList.each({
+    //    println it
+    //})
+//
+    ////最后一个参数是闭包的话，可以把闭包移动到函数外面
+    //numList.each() {
+    //    println it
+    //}
+//
+    ////省略括号
+    //numList.each {
+    //    println it
+    //}
+
+}
+
+//JavaBean
+
+task javaBean {
+    Person1 person = new Person1()
+    println "name:${person.name}"
+    person.name = "张三"
+    println "name:${person.name},age:${person.age}"
+}
+
+class Person1 {
+    String name
+
+    int getAge() {
+        return 12
+    }
+}
+
+// closure 闭包原理
+task closure {
+
+}
