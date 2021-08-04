@@ -126,7 +126,42 @@ class Person1 {
     }
 }
 
-// closure 闭包原理
+// closure 闭包原理,闭包就是一段代码块
 task closure {
+    //自定义闭包 myClosure
+    def myClosure = {
+        println "自定义闭包中的 it:${it}"
+    }
+    // 执行闭包的方式,后面直接加括号
+    // 自定义闭包中的 it:null
+    myClosure()
+    // 自定义闭包中的 it:closure params
+    myClosure("closure params");
+    //传入闭包变量
+    customEach(myClosure)
+}
 
+//定义一个方法customEach,数是一个闭包
+def customEach(Closure closure) {
+    for (int i in 1..10) {
+        closure(i)
+    }
+}
+
+//闭包委托 closure delegate
+class Student {
+    String name;
+    int age;
+
+    void eat(String food) {
+        println "${food}不好吃"
+    }
+
+    @Override
+    String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}'
+    }
 }
